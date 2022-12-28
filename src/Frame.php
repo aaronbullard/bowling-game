@@ -134,10 +134,6 @@ final class Frame {
      */
     public function isStrike(): bool
     {
-        if ($this->rollCount() === 0) {
-            return false;
-        }
-
         return $this->firstRoll() === 10;
     }
 
