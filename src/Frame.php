@@ -148,10 +148,6 @@ final class Frame {
      */
     public function isSpare(): bool
     {
-        if ($this->rollCount() < 2) {
-            return false;
-        }
-
         if ($this->isStrike()) {
             return false;
         }
