@@ -7,19 +7,6 @@ use Bowling\BowlingGame;
 
 class BowlingGameTest extends TestCase {
 
-    /**
-     *
-     * @dataProvider dataScoringSamples
-     * 
-     * @return void
-     */
-    public function test_scoring_function(int $score, array $sheet)
-    {
-        $calculatedScore = score_game($sheet);
-
-        $this->assertEquals($score, $calculatedScore);
-    }
-
     public function test_getting_frame()
     {
         $game = new BowlingGame();
@@ -77,7 +64,7 @@ class BowlingGameTest extends TestCase {
             [
                 'score' => 0,
                 'sheet' => [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-            ],
+            ]
         ];
     }
 }

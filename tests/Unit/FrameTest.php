@@ -4,6 +4,8 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Bowling\Frame;
+use InvalidArgumentException;
+use RuntimeException;
 
 class FrameTest extends TestCase {
 
@@ -47,6 +49,51 @@ class FrameTest extends TestCase {
         $this->assertEquals($isStrike, $frame->isStrike());
         $this->assertEquals($isSpare, $frame->isSpare());
         $this->assertEquals($isOpen, $frame->isOpen());
+    }
+
+    /**
+     * @dataProvider dataProviderInitialFrameNumbers
+     *
+     * @return void
+     */
+    public function test_frame_number_exception(int $frameNumber)
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("A frame number must be between 1 and 10 inclusive");
+        new Frame($frameNumber);
+    }
+
+    /**
+     * @dataProvider dataProviderInitialFrameNumbers
+     *
+     * @return void
+     */
+    public function test_pin_number_exception(int $pins)
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Number of pins cannot be less than 0 or exceed 10");
+        $frame = new Frame(1);
+        $frame->addRoll($pins);
+    }
+
+    public function test_adding_roll_to_closed_frame_exception()
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage("Frame is completed");
+        $frame = new Frame(1);
+        $frame
+            ->addRoll(2)
+            ->addRoll(2)
+            ->addRoll(2);
+    }
+
+    public function test_scoring_an_open_frame_exception()
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage("Frame cannot be scored until it is completed");
+        $frame = new Frame(1);
+        $frame->addRoll(2);
+        $frame->score();
     }
 
     private function dataProviderFrames()
@@ -149,6 +196,16 @@ class FrameTest extends TestCase {
             'isSpare' => true,
             'isOpen' => false
         ];
+    }
 
+    private function dataProviderInitialFrameNumbers()
+    {
+        yield [
+            'frame' => -1
+        ];
+
+        yield [
+            'frame' => 11
+        ];
     }
 }
