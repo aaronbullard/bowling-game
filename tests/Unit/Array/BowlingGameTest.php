@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Array;
 
 use Tests\TestCase;
-use Bowling\BowlingGame;
+use Bowling\Array\BowlingGame;
 
 class BowlingGameTest extends TestCase {
 

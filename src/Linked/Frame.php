@@ -2,14 +2,27 @@
 
 namespace Bowling\Linked;
 
-use Bowling\Frame as BaseFrame;
+use RuntimeException;
+use Bowling\Array\Frame as ArrayFrame;
 
-class Frame extends BaseFrame {
+class Frame extends ArrayFrame {
 
+    /**
+     * @var Frame\null
+     */
     protected $previous = null;
 
+    /**
+     * @var Frame\null
+     */
     protected $next = null;
 
+    /**
+     * Append the following Frame
+     *
+     * @param Frame $next
+     * @return self
+     */
     public function next(Frame $next): self
     {
         $this->next = $next;
@@ -19,6 +32,12 @@ class Frame extends BaseFrame {
         return $this;
     }
 
+    /**
+     * Prepend the previous Frame
+     *
+     * @param Frame $previous
+     * @return self
+     */
     public function setPrevious(Frame $previous): self
     {
         $this->previous = $previous;
@@ -40,8 +59,19 @@ class Frame extends BaseFrame {
         return parent::secondRoll();
     }
 
+    /**
+     * Returns the total points from this frame publicly.  Prevents
+     * returning score if the frame is not completed.
+     *
+     * @return integer
+     * @throws RuntimeException
+     */
     public function score(): int
     {
+        if ($this->isOpen()) {
+            throw new RuntimeException("Frame cannot be scored until it is completed");
+        }
+
         $score = $this->totalPins();
 
         if ($this->previous) {

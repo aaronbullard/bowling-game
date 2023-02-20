@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Array;
 
 use Tests\TestCase;
-use Bowling\Frame;
+use Bowling\Array\Frame;
 use InvalidArgumentException;
 use RuntimeException;
 

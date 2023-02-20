@@ -3,7 +3,7 @@
 namespace Tests\Unit\Linked;
 
 use Bowling\Linked\BowlingGame;
-use Tests\Unit\BowlingGameTest as UnitBowlingGameTest;
+use Tests\Unit\Array\BowlingGameTest as UnitBowlingGameTest;
 
 class BowlingGameTest extends UnitBowlingGameTest {
 

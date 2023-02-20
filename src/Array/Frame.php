@@ -1,6 +1,6 @@
 <?php
 
-namespace Bowling;
+namespace Bowling\Array;
 
 use InvalidArgumentException;
 use RuntimeException;
