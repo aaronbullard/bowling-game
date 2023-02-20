@@ -5,7 +5,7 @@ namespace Bowling;
 use InvalidArgumentException;
 use RuntimeException;
 
-final class Frame {
+class Frame {
 
     /**
      * Frame Number
@@ -179,7 +179,7 @@ final class Frame {
      *
      * @return integer
      */
-    private function totalPins(): int
+    protected function totalPins(): int
     {
         return array_reduce($this->rolls, function($carry, $pins){
             return $carry + $pins;

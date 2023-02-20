@@ -7,9 +7,14 @@ use Bowling\BowlingGame;
 
 class BowlingGameTest extends TestCase {
 
+    protected function getNewGame()
+    {
+        return new BowlingGame();
+    }
+
     public function test_getting_frame()
     {
-        $game = new BowlingGame();
+        $game = $this->getNewGame();
 
         $game->roll(1)
             ->roll(1)
@@ -29,7 +34,7 @@ class BowlingGameTest extends TestCase {
      */
     public function test_scoring(int $score, array $sheet)
     {
-        $game = new BowlingGame();
+        $game = $this->getNewGame();
 
         foreach($sheet as $roll) {
             $game->roll($roll);
