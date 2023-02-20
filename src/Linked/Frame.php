@@ -38,7 +38,7 @@ class Frame extends ArrayFrame {
      * @param Frame $previous
      * @return self
      */
-    public function setPrevious(Frame $previous): self
+    private function setPrevious(Frame $previous): self
     {
         $this->previous = $previous;
 
