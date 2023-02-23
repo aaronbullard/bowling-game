@@ -8,55 +8,28 @@ use Bowling\Array\Frame as ArrayFrame;
 class Frame extends ArrayFrame {
 
     /**
-     * @var Frame\null
+     * @var Frame|null
      */
-    protected $previous = null;
+    private $previous = null;
 
     /**
-     * @var Frame\null
+     * @var Frame|null
      */
-    protected $next = null;
+    private $next = null;
 
     /**
-     * Append the following Frame
+     * Create and return the next frame
      *
-     * @param Frame $next
      * @return self
+     * @throws InvalidArgumentException
      */
-    public function next(Frame $next): self
+    public function getNextFrame(): self
     {
-        $this->next = $next;
+        $this->next = new Frame($this->frameNumber() + 1);
 
-        $next->setPrevious($this);
+        $this->next->previous = $this;
 
-        return $this;
-    }
-
-    /**
-     * Prepend the previous Frame
-     *
-     * @param Frame $previous
-     * @return self
-     */
-    private function setPrevious(Frame $previous): self
-    {
-        $this->previous = $previous;
-
-        return $this;
-    }
-
-    /**
-     * Pins dropped in second roll
-     *
-     * @return integer|null
-     */
-    public function secondRoll(): ?int
-    {
-        if ($this->isStrike() && !$this->isLastFrame()) {
-            return $this->next->firstRoll();
-        }
-
-        return parent::secondRoll();
+        return $this->next;
     }
 
     /**
@@ -88,7 +61,9 @@ class Frame extends ArrayFrame {
 
         if ($this->isStrike()) {
             $score += $this->next->firstRoll();
-            $score += $this->next->secondRoll();
+            $score += $this->next->isStrike() && !$this->next->isLastFrame()
+                ? $this->next->next->firstRoll() 
+                : $this->next->secondRoll();
         }
 
         return $score;
