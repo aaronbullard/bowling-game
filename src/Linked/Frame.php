@@ -23,7 +23,7 @@ class Frame extends ArrayFrame {
      * @return self
      * @throws InvalidArgumentException
      */
-    public function getNextFrame(): self
+    public function createNextFrame(): self
     {
         $this->next = new Frame($this->frameNumber() + 1);
 
@@ -51,7 +51,7 @@ class Frame extends ArrayFrame {
             $score += $this->previous->score();
         }
 
-        if ($this->isLastFrame()) {
+        if ($this->isLastFrame() || $this->next === null) {
             return $score;
         }
         

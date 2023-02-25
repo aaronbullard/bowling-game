@@ -14,7 +14,7 @@ class BowlingGame {
     public function roll(int $pins): self
     {
         if (!$this->frame->isOpen()) {
-            $this->frame = $this->frame->getNextFrame();
+            $this->frame = $this->frame->createNextFrame();
         }
 
         $this->frame->addRoll($pins);
