@@ -181,9 +181,7 @@ class Frame {
      */
     protected function totalPins(): int
     {
-        return array_reduce($this->rolls, function($carry, $pins){
-            return $carry + $pins;
-        }, 0);
+        return array_sum($this->rolls);
     }
 
     /**
