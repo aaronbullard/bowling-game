@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit\Array;
+namespace Tests\Unit;
 
 use Tests\TestCase;
-use Bowling\Array\Frame;
+use Bowling\Frame;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -27,28 +27,14 @@ class FrameTest extends TestCase {
         $frame = new Frame($frameNumber);
 
         foreach($rolls as $roll) {
-            $frame->addRoll($roll);
+            $frame->roll($roll);
         }
 
-        if (isset($rolls[0])) {
-            $this->assertEquals($rolls[0], $frame->firstRoll());
-        }
-
-        if (isset($rolls[1])) {
-            $this->assertEquals($rolls[1], $frame->secondRoll());
-        }
-
-        if (isset($rolls[2])) {
-            $this->assertEquals($rolls[2], $frame->thirdRoll());
-        }
-
-        if (!$frame->isOpen()) {
+        if ($frame->isClosed()) {
             $this->assertEquals($score, $frame->score());
         }
 
-        $this->assertEquals($isStrike, $frame->isStrike());
-        $this->assertEquals($isSpare, $frame->isSpare());
-        $this->assertEquals($isOpen, $frame->isOpen());
+        $this->assertEquals($isOpen, !$frame->isClosed());
     }
 
     /**
@@ -64,7 +50,7 @@ class FrameTest extends TestCase {
     }
 
     /**
-     * @dataProvider dataProviderInitialFrameNumbers
+     * @dataProvider dataProviderPinNumbers
      *
      * @return void
      */
@@ -73,7 +59,7 @@ class FrameTest extends TestCase {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Number of pins cannot be less than 0 or exceed 10");
         $frame = new Frame(1);
-        $frame->addRoll($pins);
+        $frame->roll($pins);
     }
 
     public function test_adding_roll_to_closed_frame_exception()
@@ -82,9 +68,9 @@ class FrameTest extends TestCase {
         $this->expectExceptionMessage("Frame is completed");
         $frame = new Frame(1);
         $frame
-            ->addRoll(2)
-            ->addRoll(2)
-            ->addRoll(2);
+            ->roll(2)
+            ->roll(2)
+            ->roll(2);
     }
 
     public function test_scoring_an_open_frame_exception()
@@ -92,7 +78,7 @@ class FrameTest extends TestCase {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage("Frame cannot be scored until it is completed");
         $frame = new Frame(1);
-        $frame->addRoll(2);
+        $frame->roll(2);
         $frame->score();
     }
 
@@ -206,6 +192,21 @@ class FrameTest extends TestCase {
 
         yield [
             'frame' => 11
+        ];
+
+        yield [
+            'frame' => 0
+        ];
+    }
+
+    private function dataProviderPinNumbers()
+    {
+        yield [
+            'pins' => -1
+        ];
+
+        yield [
+            'pins' => 11
         ];
     }
 }
