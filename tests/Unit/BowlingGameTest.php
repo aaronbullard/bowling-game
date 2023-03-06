@@ -12,29 +12,6 @@ class BowlingGameTest extends TestCase {
         return new BowlingGame();
     }
 
-    public function test_preventing_score_before_frame_is_completed()
-    {
-        $game = $this->getNewGame();
-
-        $game->roll(5);
-
-        $this->expectException(\RuntimeException::class);
-
-        $game->score();
-    }
-
-    public function test_a_spare_in_the_last_frame()
-    {
-        $game = $this->getNewGame();
-
-        $game->roll(1);
-        $game->roll(9);
-        $game->roll(5);
-        $game->roll(5);
-
-        $this->assertEquals(25, $game->score());
-    }
-
     /**
      *
      * @dataProvider dataScoringSamples
@@ -58,7 +35,7 @@ class BowlingGameTest extends TestCase {
      * 
      * @return void
      */
-    public function test_exception(array $sheet, string $exception, string $message)
+    public function test_exceptions(array $sheet, string $exception, string $message)
     {
         $game = $this->getNewGame();
 
@@ -68,7 +45,7 @@ class BowlingGameTest extends TestCase {
         foreach($sheet as $roll) {
             $game->roll($roll);
         }
-        
+
         $game->score();
     }
 
@@ -123,6 +100,12 @@ class BowlingGameTest extends TestCase {
             'sheet' => [10,10,10,10,10,10,10,10,10,10,10,10,10],
             'exception' => 'RuntimeException',
             'message' => 'Frame is completed',
+        ];
+
+        yield 'scoring an incomplete frame' => [
+            'sheet' => [1, 5, 3],
+            'exception' => 'RuntimeException',
+            'message' => 'Frame cannot be scored until it is completed',
         ];
     }
 }
